@@ -1,7 +1,7 @@
 import { NativeModules } from 'react-native';
 
 type InstaShareType = {
-  multiply(a: number, b: number): Promise<number>;
+  share(type: string, mediaPath: string): Promise<number>;
 };
 
 const { InstaShare } = NativeModules;

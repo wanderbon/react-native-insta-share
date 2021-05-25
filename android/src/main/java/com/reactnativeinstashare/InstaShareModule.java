@@ -34,7 +34,7 @@ public class InstaShareModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void share(String uri) {
+    public void share(String uri, Promise promise) {
       createInstagramIntent(type, uri);
     }
 

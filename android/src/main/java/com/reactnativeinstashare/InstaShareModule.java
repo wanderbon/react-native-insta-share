@@ -74,7 +74,6 @@ public class InstaShareModule extends ReactContextBaseJavaModule {
 
       PackageManager packageManager = mContext.getPackageManager();
       if (feedIntent.resolveActivity(packageManager) != null) {
-        Log.i("FOR_LOG", chooserIntent.resolveActivity(packageManager).getPackageName());
         mContext.startActivity(chooserIntent);
       } else {
         if(mainPromise != null) {
@@ -92,8 +91,6 @@ public class InstaShareModule extends ReactContextBaseJavaModule {
           mContext.startActivity(MarketIntent);
         } catch (android.content.ActivityNotFoundException anfe) {
           mContext.startActivity(GooglePlayIntent);
-        } catch(Exception exception) {
-          Log.i("FOR_LOG_EX", exception.getMessage());
         }
       }
     }

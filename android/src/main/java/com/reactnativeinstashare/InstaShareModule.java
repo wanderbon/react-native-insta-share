@@ -2,7 +2,9 @@ package com.reactnativeinstashare;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
 
 import androidx.annotation.NonNull;
 
@@ -39,8 +41,12 @@ public class InstaShareModule extends ReactContextBaseJavaModule {
     }
 
     private void createInstagramIntent(String type, String mediaPath){
+
       File media = new File(mediaPath);
-      Uri uri = Uri.fromFile(media);
+      Uri uri = FileProvider.getUriForFile(
+        mContext,
+        mContext.getPackageName() + ".provider",
+        media);
 
       Intent feedIntent = new Intent(Intent.ACTION_SEND);
       feedIntent.setType("image/*");

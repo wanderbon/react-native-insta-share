@@ -1,6 +1,6 @@
 {
   "name": "react-native-insta-share",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Share to Instagram",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",

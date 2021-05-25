@@ -37,11 +37,14 @@ public class InstaShareModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void share(String uri, Promise promise) {
-      createInstagramIntent(type, uri);
+      try {
+        createInstagramIntent(type, uri);
+      } catch(Exception exception) {
+        promise.reject(exception);
+      }
     }
 
     private void createInstagramIntent(String type, String mediaPath){
-
       File media = new File(mediaPath);
       Uri uri = FileProvider.getUriForFile(
         mContext,

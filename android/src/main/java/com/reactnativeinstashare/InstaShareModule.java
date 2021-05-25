@@ -73,7 +73,7 @@ public class InstaShareModule extends ReactContextBaseJavaModule {
       chooserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
       PackageManager packageManager = mContext.getPackageManager();
-      if (chooserIntent.resolveActivity(packageManager) != null) {
+      if (feedIntent.resolveActivity(packageManager) != null) {
         Log.i("FOR_LOG", chooserIntent.resolveActivity(packageManager).getPackageName());
         mContext.startActivity(chooserIntent);
       } else {

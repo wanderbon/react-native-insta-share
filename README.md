@@ -15,7 +15,7 @@ import InstaShare from "react-native-insta-share";
 
 // ...
 
-const result = await InstaShare.multiply(3, 7);
+const result = await InstaShare.share('/path-to-local-uri');
 ```
 
 ## Contributing

@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.support.v4.content.FileProvider;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -73,12 +74,13 @@ public class InstaShareModule extends ReactContextBaseJavaModule {
 
       PackageManager packageManager = mContext.getPackageManager();
       if (chooserIntent.resolveActivity(packageManager) != null) {
+        Log.i("FOR_LOG", chooserIntent.resolveActivity(packageManager).getPackageName());
         mContext.startActivity(chooserIntent);
       } else {
         if(mainPromise != null) {
           mainPromise.reject("101", "app_not_install");
         }
-        
+
         final String appPackageName = "com.instagram.android";
         Intent GooglePlayIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName));
         Intent MarketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName));
@@ -90,6 +92,8 @@ public class InstaShareModule extends ReactContextBaseJavaModule {
           mContext.startActivity(GooglePlayIntent);
         } catch (android.content.ActivityNotFoundException anfe) {
           mContext.startActivity(MarketIntent);
+        } catch(Exception exception) {
+          Log.i("FOR_LOG_EX", exception.getMessage());
         }
       }
     }

@@ -1,6 +1,7 @@
 package com.reactnativeinstashare;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -20,6 +21,7 @@ import java.io.File;
 public class InstaShareModule extends ReactContextBaseJavaModule {
     public static final String NAME = "InstaShare";
     ReactApplicationContext mContext;
+    Promise mainPromise;
 
     String type = "image/*";
 
@@ -37,6 +39,7 @@ public class InstaShareModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void share(String uri, Promise promise) {
+      mainPromise = promise;
       try {
         createInstagramIntent(type, uri);
       } catch(Exception exception) {
@@ -67,6 +70,14 @@ public class InstaShareModule extends ReactContextBaseJavaModule {
       Intent chooserIntent = Intent.createChooser(feedIntent, mContext.getString(R.string.social_instagram));
       chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {storiesIntent});
       chooserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-      mContext.startActivity(chooserIntent);
+
+      PackageManager packageManager = mContext.getPackageManager();
+      if (chooserIntent.resolveActivity(packageManager) != null) {
+        mContext.startActivity(chooserIntent);
+      } else {
+        if(mainPromise != null) {
+          mainPromise.reject("101", "app_not_install");
+        }
+      }
     }
 }

@@ -1,5 +1,9 @@
 package com.reactnativeinstashare;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
+
 import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.Promise;
@@ -8,12 +12,19 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.module.annotations.ReactModule;
 
+import java.io.File;
+
 @ReactModule(name = InstaShareModule.NAME)
 public class InstaShareModule extends ReactContextBaseJavaModule {
     public static final String NAME = "InstaShare";
+    ReactApplicationContext mContext;
+
+    String type = "image/*";
 
     public InstaShareModule(ReactApplicationContext reactContext) {
         super(reactContext);
+
+        mContext = reactContext;
     }
 
     @Override
@@ -22,13 +33,30 @@ public class InstaShareModule extends ReactContextBaseJavaModule {
         return NAME;
     }
 
-
-    // Example method
-    // See https://reactnative.dev/docs/native-modules-android
     @ReactMethod
-    public void multiply(int a, int b, Promise promise) {
-        promise.resolve(a * b);
+    public void share(String uri) {
+      createInstagramIntent(type, uri);
     }
 
-    public static native int nativeMultiply(int a, int b);
+    private void createInstagramIntent(String type, String mediaPath){
+      File media = new File(mediaPath);
+      Uri uri = Uri.fromFile(media);
+
+      Intent feedIntent = new Intent(Intent.ACTION_SEND);
+      feedIntent.setType("image/*");
+      feedIntent.putExtra(Intent.EXTRA_STREAM, uri);
+      feedIntent.setPackage("com.instagram.android");
+
+      Intent storiesIntent = new Intent("com.instagram.share.ADD_TO_STORY");
+      storiesIntent.setDataAndType(uri, "jpg");
+      storiesIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+      storiesIntent.setPackage("com.instagram.android");
+
+      mContext.grantUriPermission(
+        "com.instagram.android", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+      Intent chooserIntent = Intent.createChooser(feedIntent, mContext.getString(R.string.social_instagram));
+      chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {storiesIntent});
+      mContext.startActivity(chooserIntent);
+    }
 }

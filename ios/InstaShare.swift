@@ -3,7 +3,7 @@ import Photos
 @objc(InstaShare)
 class InstaShare: NSObject {
     private let kInstagramURL = "instagram://app"
-    private let kAlertViewTitle = "error"
+    private let kAlertViewTitle = "101"
     private let kAlertViewMessage = "app_not_install"
 
     func postImageToInstagramWithCaption(imageInstagram: UIImage, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {

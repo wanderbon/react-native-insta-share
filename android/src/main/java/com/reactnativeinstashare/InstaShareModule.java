@@ -75,6 +75,10 @@ public class InstaShareModule extends ReactContextBaseJavaModule {
       if (chooserIntent.resolveActivity(packageManager) != null) {
         mContext.startActivity(chooserIntent);
       } else {
+        if(mainPromise != null) {
+          mainPromise.reject("101", "app_not_install");
+        }
+        
         final String appPackageName = "com.instagram.android";
         Intent GooglePlayIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName));
         Intent MarketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName));
@@ -86,10 +90,6 @@ public class InstaShareModule extends ReactContextBaseJavaModule {
           mContext.startActivity(GooglePlayIntent);
         } catch (android.content.ActivityNotFoundException anfe) {
           mContext.startActivity(MarketIntent);
-        }
-
-        if(mainPromise != null) {
-          mainPromise.reject("101", "app_not_install");
         }
       }
     }

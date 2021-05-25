@@ -89,9 +89,9 @@ public class InstaShareModule extends ReactContextBaseJavaModule {
         MarketIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         try {
-          mContext.startActivity(GooglePlayIntent);
-        } catch (android.content.ActivityNotFoundException anfe) {
           mContext.startActivity(MarketIntent);
+        } catch (android.content.ActivityNotFoundException anfe) {
+          mContext.startActivity(GooglePlayIntent);
         } catch(Exception exception) {
           Log.i("FOR_LOG_EX", exception.getMessage());
         }

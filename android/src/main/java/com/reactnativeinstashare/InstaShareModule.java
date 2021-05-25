@@ -57,6 +57,7 @@ public class InstaShareModule extends ReactContextBaseJavaModule {
 
       Intent chooserIntent = Intent.createChooser(feedIntent, mContext.getString(R.string.social_instagram));
       chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {storiesIntent});
+      chooserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
       mContext.startActivity(chooserIntent);
     }
 }

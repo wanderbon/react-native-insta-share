@@ -10,17 +10,16 @@ class InstaShare: NSObject {
         let instagramURL = NSURL(string: kInstagramURL)
         
         if UIApplication.shared.canOpenURL(instagramURL! as URL) {
-            do {
-                try PHPhotoLibrary.shared().performChangesAndWait {
-                    let imgReq = PHAssetChangeRequest.creationRequestForAsset(from: imageInstagram)
-                    let localIdentifier = imgReq.placeholderForCreatedAsset?.localIdentifier
-                    let instgramChoserLink = "instagram://library?LocalIdentifier=" + localIdentifier!
-                    
-                    UIApplication.shared.open(NSURL(string: instgramChoserLink)! as URL, options: [:], completionHandler: nil)
-                 }
-            } catch {
-                let errorTemp = NSError(domain:"", code:104, userInfo:nil)
-                reject(self.kAlertViewTitle, "permissions_not_recived", errorTemp)
+            let fetchOptions = PHFetchOptions()
+            fetchOptions.sortDescriptors = [NSSortDescriptor(key:"creationDate", ascending: false)]
+            
+            let fetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions)
+            
+            if let lastAsset = fetchResult.firstObject {
+                let localIdentifier = lastAsset.localIdentifier
+                let instgramChoserLink = "instagram://library?LocalIdentifier=" + localIdentifier
+                
+                UIApplication.shared.open(NSURL(string: instgramChoserLink)! as URL, options: [:], completionHandler: nil)
             }
         }
         else {
